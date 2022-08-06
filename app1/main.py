@@ -9,18 +9,27 @@ import time
 from . import models, schemas
 from .database import engine, get_db
 from sqlalchemy.orm import Session
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+db = os.getenv("DB")
+host = os.getenv("HOST")
+password = os.getenv("PSWD")
+user = os.getenv("USER")
+
+print(password)
 
 models.Base.metadata.create_all(bind=engine) # this codes create tables
 
 app = FastAPI()
 
-
-    
-  
+"""
 while True:    
     try:
-        conn = psycopg2.connect(host='localhost', database='fastapi', 
-                            user='postgres', password='1613', 
+        conn = psycopg2.connect(host=host, database=db, 
+                            user=user, password=password, 
                             cursor_factory=RealDictCursor)
         cursor = conn.cursor()
         print('database connection was successfull')
@@ -29,6 +38,8 @@ while True:
         print("connetcion failedd error--------------")
         print('Error:', error)
         time.sleep(2)
+"""
+
 
     
 my_post = [{'title':'title of post 1', 'content': 'content 0f 1', 'id': 1},
