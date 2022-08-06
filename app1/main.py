@@ -1,14 +1,6 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends
-from fastapi.params import Body
-from pydantic import BaseModel
-from typing import Optional, List
-from random import randrange
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
-from . import models, schemas, utils
-from .database import engine, get_db
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
+from . import models
+from .database import engine
 from dotenv import load_dotenv
 import os
 from .routers import post, user
@@ -41,6 +33,8 @@ while True:
         print('Error:', error)
         time.sleep(2)
 """
+
+
 
 app.include_router(post.router)
 app.include_router(user.router)
