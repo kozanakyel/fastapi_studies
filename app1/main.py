@@ -42,22 +42,6 @@ while True:
         time.sleep(2)
 """
 
-
-    
-my_post = [{'title':'title of post 1', 'content': 'content 0f 1', 'id': 1},
-           {'title':'title pizza', 'content': 'content 0f pizza', 'id': 2}]
-
-
-def find_post(id):
-    for p in my_post:
-        if p['id'] == id:
-            return p
-        
-def find_index_post(id):
-    for index, post in enumerate(my_post):
-        if post['id'] == id:
-            return index
-
 app.include_router(post.router)
 app.include_router(user.router)
 
