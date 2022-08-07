@@ -32,8 +32,8 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), current
     # new_post = cursor.fetchone()
     # conn.commit() # keep in mind it is necessary for all insert operations
     
-    print(current_user.email)
-    new_post = models.Post(**post.dict())
+    
+    new_post = models.Post(owner_id=current_user.id, **post.dict())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)  # for returning *, sql alchemy model
