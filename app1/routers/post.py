@@ -1,5 +1,7 @@
 from typing import List
-from .. import models, schemas
+
+from app1 import oauth2
+from .. import models, schemas, oauth2
 from fastapi import Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -10,7 +12,7 @@ router = APIRouter(
 )
 
 @router.get('/', response_model=List[schemas.Post])
-def get_posts(db: Session = Depends(get_db)):
+def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     # cursor.execute("""SELECT * FROM posts """)
     # posts = cursor.fetchall()
     posts = db.query(models.Post).all()
@@ -18,7 +20,8 @@ def get_posts(db: Session = Depends(get_db)):
 
 
 @router.post('/', response_model=schemas.Post, status_code=status.HTTP_201_CREATED)
-def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
+def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+#def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), get_current_user: int = Depends(oauth2.get_current_user)):
     #post_dict = post.dict()
     #post_dict['id'] = randrange(0, 1000000)
     #my_post.append(post_dict)
@@ -29,7 +32,7 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     # new_post = cursor.fetchone()
     # conn.commit() # keep in mind it is necessary for all insert operations
     
-    
+    print(current_user.email)
     new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()
@@ -49,7 +52,7 @@ def get_latest_post():
 
 
 @router.get('/{id}', response_model=schemas.Post)
-def get_post(id: int, db: Session = Depends(get_db)): # automatically converted from frontend
+def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)): # automatically converted from frontend
     #print(type(id))  # there is an error type convertions
     
     # cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
@@ -71,7 +74,7 @@ def get_post(id: int, db: Session = Depends(get_db)): # automatically converted 
 
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db)):
+def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     
     # cursor.execute("""DELETE FROM posts WHERE id = %s returning * """,(str(id),))
     # deleted_post = cursor.fetchone()
@@ -97,7 +100,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 
 
 @router.put('/{id}', response_model=schemas.Post)
-def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db)):
+def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     
     # cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s  WHERE id = %s returning * """, 
       #             (post.title, post.content, post.published, id))
