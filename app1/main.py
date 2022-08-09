@@ -4,6 +4,7 @@ from .database import engine
 from dotenv import load_dotenv
 import os
 from .routers import post, user, auth
+from .config import settings
 
 
 load_dotenv()

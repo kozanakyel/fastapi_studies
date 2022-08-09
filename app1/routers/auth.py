@@ -19,8 +19,11 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                 detail=f'Invalid Credentials')
 
+    ########### BURAYI DERIN INCELE PGADMIN DEKI VE HASHED DEKI PASSWORDLARDANDOLAYI
+    ######### TEKRAR SILME VE KARAR VERME ISLEMI YAP,MALISIN
+
     hashed_user_password = utils.hash(user.password)  # bu video da yoktu gerekli hata veriryor
-    if not utils.verify(plain_password=user_credentials.password, hashed_password=hashed_user_password):
+    if not utils.verify(plain_password=user_credentials.password, hashed_password=user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
                 detail=f'Invalid Credentials')
 

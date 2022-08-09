@@ -7,12 +7,13 @@ from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app1 import schemas, database, models 
+from .config import settings
 
 load_dotenv()
 
 scrt_ky = os.getenv("SECRET_KEY")
 algrthm = os.getenv("ALGORITHM")
-acces_time_tkn = int(os.getenv("ACCESS_TOKEN_EXPIRE_TIME"))
+acces_time_tkn = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 # SECRET KEY
 # Algorithm
